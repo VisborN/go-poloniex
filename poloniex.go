@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	API_BASE                   = "https://poloniex.com"  // Poloniex API endpoint
-	API_WS                     = "wss://api.poloniex.com" // Poloniex WS endpoint
+	API_BASE = "https://poloniex.com"    // Poloniex API endpoint
+	API_WS   = "wss://api2.poloniex.com" // Poloniex WS endpoint
 )
 
 // New returns an instantiated poloniex struct
@@ -33,8 +33,8 @@ type Poloniex struct {
 }
 
 // set enable/disable http request/response dump
-func (c *Poloniex) SetDebug(enable bool) {
-	c.client.debug = enable
+func (b *Poloniex) SetDebug(enable bool) {
+	b.client.debug = enable
 }
 
 // GetTickers is used to get the ticker for all markets
@@ -260,7 +260,7 @@ func (b *Poloniex) Sell(pair string, rate float64, amount float64, tradeType str
 
 func (b *Poloniex) GetOpenOrders(pair string) (openOrders map[string][]OpenOrder, err error) {
 	openOrders = make(map[string][]OpenOrder)
-	r, err := b.client.doCommand("returnOpenOrders", map[string]string{"currencyPair":pair})
+	r, err := b.client.doCommand("returnOpenOrders", map[string]string{"currencyPair": pair})
 	if err != nil {
 		return
 	}
@@ -276,4 +276,18 @@ func (b *Poloniex) GetOpenOrders(pair string) (openOrders map[string][]OpenOrder
 		openOrders[pair] = onePairOrders
 	}
 	return
+}
+
+func (b *Poloniex) GetFees() (Fees, error) {
+	reqParams := map[string]string{}
+	r, err := b.client.doCommand("returnFeeInfo", reqParams)
+	if err != nil {
+		return Fees{}, err
+	}
+	var orderResponse Fees
+	if err = json.Unmarshal(r, &orderResponse); err != nil {
+		return Fees{}, err
+	}
+
+	return orderResponse, nil
 }

@@ -1,5 +1,7 @@
 package poloniex
 
+import "encoding/json"
+
 type CandleStick struct {
 	Date            PoloniexDate `json:"date"`
 	High            float64      `json:"high"`
@@ -9,4 +11,15 @@ type CandleStick struct {
 	Volume          float64      `json:"volume"`
 	QuoteVolume     float64      `json:"quoteVolume"`
 	WeightedAverage float64      `json:"weightedAverage"`
+}
+
+func (u *CandleStick) MarshalJSON() ([]byte, error) {
+	type Alias CandleStick
+	return json.Marshal(&struct {
+		Date int64 `json:"date"`
+		*Alias
+	}{
+		Date:  u.Date.Unix(),
+		Alias: (*Alias)(u),
+	})
 }
