@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/avdva/turnpike"
+	"gopkg.in/jcelliott/turnpike.v2"
 )
 
 type client struct {

@@ -5,11 +5,11 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/avdva/turnpike"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
+	"gopkg.in/jcelliott/turnpike.v2"
 )
 
 var (

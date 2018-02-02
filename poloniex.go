@@ -1,4 +1,4 @@
-// Package Poloniex is an implementation of the Poloniex API in Golang.
+//Package poloniex is an implementation of the Poloniex API in Golang.
 package poloniex
 
 import (
@@ -73,7 +73,7 @@ func (b *Poloniex) GetCurrencies() (currencies Currencies, err error) {
 }
 
 // GetOrderBook is used to get retrieve the orderbook for a given market
-// market: a string literal for the market (ex: BTC_NXT). 'all' not implemented.
+// market: a string literal for the market (ex: BTC_NXT). 'all' in other function.
 // cat: bid, ask or both to identify the type of orderbook to return.
 // depth: how deep of an order book to retrieve
 func (b *Poloniex) GetOrderBook(market, cat string, depth int) (orderBook OrderBook, err error) {
@@ -97,6 +97,31 @@ func (b *Poloniex) GetOrderBook(market, cat string, depth int) (orderBook OrderB
 	}
 	if orderBook.Error != "" {
 		err = errors.New(orderBook.Error)
+		return
+	}
+	return
+}
+
+// GetAllOrderBook is used to get retrieve the orderbook for all markets
+// cat: bid, ask or both to identify the type of orderbook to return.
+// depth: how deep of an order book to retrieve
+func (b *Poloniex) GetAllOrderBook(cat string, depth int) (orderBook map[string]OrderBook, err error) {
+	// not implemented
+	if cat != "bid" && cat != "ask" && cat != "both" {
+		cat = "both"
+	}
+	if depth > 100 {
+		depth = 100
+	}
+	if depth < 1 {
+		depth = 1
+	}
+
+	r, err := b.client.do("GET", fmt.Sprintf("public?command=returnOrderBook&currencyPair=all&depth=%d", depth), nil, false)
+	if err != nil {
+		return
+	}
+	if err = json.Unmarshal(r, &orderBook); err != nil {
 		return
 	}
 	return

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net"
 
-	"github.com/avdva/turnpike"
+	"gopkg.in/jcelliott/turnpike.v2"
 )
 
 func (c *client) close() error {
@@ -18,7 +18,7 @@ func (c *client) close() error {
 }
 
 func (c *client) makeWsClient() (*turnpike.Client, error) {
-	cl, err := turnpike.NewWebsocketClient(turnpike.JSONNUMBER, API_WS, nil, nil,
+	cl, err := turnpike.NewWebsocketClient(turnpike.JSON, API_WS, nil, nil,
 		func(network, addr string) (net.Conn, error) {
 			return net.DialTimeout(network, addr, c.httpTimeout)
 		},

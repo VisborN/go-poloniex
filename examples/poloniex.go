@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/avdva/go-poloniex"
+	poloniex "github.com/VisborN/go-poloniex"
 )
 
 const (
@@ -71,6 +71,16 @@ func main() {
 	/*
 		orderBook, err := client.GetOrderBook("BTC-DRK", "both", 100)
 		fmt.Println(err, orderBook)
+	*/
+
+	// Get all pairs orders book
+	/*
+		orderBook, err := client.GetAllOrderBook("both", 5)
+		fmt.Println(err)
+		for pair, ord := range orderBook {
+			fmt.Println(pair, ord)
+
+		}
 	*/
 
 	// Market history
